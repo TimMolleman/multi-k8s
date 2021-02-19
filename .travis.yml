@@ -1,6 +1,10 @@
 sudo: required
 services:
-  - docker
+  - docke
+env:
+  global:
+    - SHA=$(git rev-parse HEAD)
+    - CLOUDSDK_CORE_DISABLE_PROMPTS=1
 before_install:
   # This is for getting the right service-account.json file by decrypting it from the travis server
   - openssl aes-256-cbc -K $encrypted_9f3b5599b056_key -iv $encrypted_9f3b5599b056_iv -in service-account.json.enc -out service-account.json -d
@@ -12,4 +16,14 @@ before_install:
   - gcloud config set project multi-k8s-305312 # Set to right project in Google Cloud
   - gcloud config set compute/zone europe-west4-b # Set right zone (which corresponds to k8s cluser on google cloud)
   - gcloud container clusters get-credentials multi-cluster # Specify the cluster name
-  # - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker build -t timmolleman/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+    - docker run -e CI=true USERNAME/react-test npm test -- --coverage
+
+deploy:
+  provider: script
+  script: bash ./deploy.sh # deploy.sh will be used for building and deploying images and stuff
+  on:
+    branch: master # Only deploy to dockerhub when master branch is updated
