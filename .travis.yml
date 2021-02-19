@@ -1,0 +1,11 @@
+sudo: required
+services:
+  - docker
+before_install:
+  # This is for getting the right service-account.json file by decrypting it from the travis server
+  - openssl aes-256-cbc -K $encrypted_9f3b5599b056_key -iv $encrypted_9f3b5599b056_iv -in service-account.json.enc -out service-account.json -d
+  # Install google cloud CLI
+  - curl https://sdk.cloud.google.com | bash > /dev/null;
+  - source $HOME/google-cloud-sdk/path.bash.inc
+  - gcloud components update kubectl # Install and/or update k8s version in travis
+  - gcloud auth activate-service-account --key-file service-account.json # Authorization for our google cloud account
