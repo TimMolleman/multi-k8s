@@ -1,0 +1,21 @@
+224:
+Een ClusterIP exposed een aantal pods (object) aan andere objecten binnen het cluster. Zorgt
+dus dat anders pods kunnen connecten met een object. Vanaf buiten kan je dus niks met deze IP.
+Het is dus geen nodeport, waarmee de buitenwereld contact kan maken.
+
+235:
+Volumes voor databases zijn nodig, want als een postgres instantie aan een pod gebonden zou zijn,
+dan is alle data weg als de pod/deployment crashed. Volume ligt buiten de pod zodat
+de data niet kwijtraakt.
+
+237:
+Persistent volume bestaat buiten de pod, en dus gaat niet weg wanneer een pod down gaat.
+
+238:
+Persistent volume claim zegt wat voor volumes er binnen het cluster aanwezig moeten zijn. Het is op zichzelf
+nog geen persitent volume. statische persistent volumes zijn ahead of time gemaakt, dynamic persistent volumes
+pas als aangevraagd.
+
+246:
+Secret creeeren ->
+kubectl create secret generic <secret_name> --from-literal <key=value>
