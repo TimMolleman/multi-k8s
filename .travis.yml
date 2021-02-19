@@ -8,4 +8,8 @@ before_install:
   - curl https://sdk.cloud.google.com | bash > /dev/null;
   - source $HOME/google-cloud-sdk/path.bash.inc
   - gcloud components update kubectl # Install and/or update k8s version in travis
-  - gcloud auth activate-service-account --key-file service-account.json # Authorization for our google cloud account
+  - gcloud auth activate-service-account --key-file service-account.json # Authorization for our google cloud account from decrypted service-account file
+  - gcloud config set project multi-k8s-305312 # Set to right project in Google Cloud
+  - gcloud config set compute/zone europe-west4-b # Set right zone (which corresponds to k8s cluser on google cloud)
+  - gcloud container clusters get-credentials multi-cluster # Specify the cluster name
+  # - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
