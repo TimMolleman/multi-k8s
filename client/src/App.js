@@ -17,7 +17,7 @@ function App() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Learn React 3
+            KUBERNETES
           </a>
           <Link to="/">komop</Link>
           <Link to="/otherpage">Other veramder</Link>
